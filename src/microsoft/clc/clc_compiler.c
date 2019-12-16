@@ -109,10 +109,10 @@ emit_metadata(struct dxil_module *m)
                            ARRAY_SIZE(subnodes_26_31_0_17_33)))
       return false;
 
-   unsigned llvm_indent = 1, dx_version = 4, dx_valver = 4,
+   unsigned llvm_ident = 1, dx_version = 4, dx_valver = 4,
             dx_shader_model = 7, dx_resources = 16,
             dx_type_annotations[] = { 24, 29 }, dx_entry_points = 33;
-   if (!dxil_emit_metadata_named_node(m, "llvm.ident", &llvm_indent, 1) ||
+   if (!dxil_emit_metadata_named_node(m, "llvm.ident", &llvm_ident, 1) ||
        !dxil_emit_metadata_named_node(m, "dx.version", &dx_version, 1) ||
        !dxil_emit_metadata_named_node(m, "dx.valver", &dx_valver, 1) ||
        !dxil_emit_metadata_named_node(m, "dx.shaderModel",
