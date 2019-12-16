@@ -373,7 +373,7 @@ struct dxil_type {
    unsigned id;
 };
 
-struct dxil_type *
+static struct dxil_type *
 create_type(struct dxil_module *m, enum type_type type)
 {
    struct dxil_type *ret = CALLOC_STRUCT(dxil_type);
