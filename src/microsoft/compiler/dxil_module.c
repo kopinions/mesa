@@ -1214,8 +1214,6 @@ bool
 dxil_emit_metadata_node(struct dxil_module *m, const unsigned subnodes[],
                         size_t num_subnodes)
 {
-   const int METADATA_NODE = 3; // TODO: remove
-
    uint64_t data[256];
    assert(num_subnodes < ARRAY_SIZE(data));
    for (size_t i = 0; i < num_subnodes; ++i)
