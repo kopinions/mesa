@@ -1069,7 +1069,6 @@ emit_undef_value(struct dxil_module *m)
    return emit_record_no_abbrev(m, CST_CODE_UNDEF, NULL, 0);
 }
 
-
 static bool
 emit_int_value(struct dxil_module *m, int64_t value)
 {
