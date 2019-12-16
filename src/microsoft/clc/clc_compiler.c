@@ -225,7 +225,6 @@ emit_module(struct dxil_module *m)
       { bufferstore_func_type, true, 2 },
       { createhandle_func_type, true, 3 }
    };
-   m->next_value_id += ARRAY_SIZE(funcs);
 
    struct dxil_const global_consts[] = {
       { int32_type, .int_value = 1 },

@@ -986,6 +986,7 @@ emit_module_info_function(struct dxil_module *m, int type, bool declaration,
       0 /* storage class */, 0 /* comdat */, 0 /* prefix-data */,
       0 /* personality */
    };
+   m->next_value_id++;
    return dxil_module_emit_record(m, DXIL_MODULE_CODE_FUNCTION,
                                   data, ARRAY_SIZE(data));
 }
