@@ -111,6 +111,11 @@ enum dxil_component_type {
    DXIL_COMP_TYPE_UNORMF64 = 16
 };
 
+enum {
+   DXIL_TYPED_BUFFER_ELEMENT_TYPE_TAG = 0,
+   DXIL_STRUCTURED_BUFFER_ELEMENT_STRIDE_TAG = 1
+};
+
 static bool
 emit_module(struct dxil_module *m)
 {
@@ -195,16 +200,17 @@ emit_module(struct dxil_module *m)
    const struct dxil_mdnode *node11 = dxil_get_metadata_int32(m, 10);
 
    const dxil_value int1_0 = dxil_module_get_int1_const(m, false);
-   const struct dxil_mdnode *node4 = dxil_get_metadata_int32(m, 0);
-   const struct dxil_mdnode *output_buffer_type = dxil_get_metadata_int32(m, DXIL_COMP_TYPE_U32);
+   const struct dxil_mdnode *buffer_element_type_tag = dxil_get_metadata_int32(m, DXIL_TYPED_BUFFER_ELEMENT_TYPE_TAG);
+   const struct dxil_mdnode *output_buffer_element_type = dxil_get_metadata_int32(m, DXIL_COMP_TYPE_U32);
    const struct dxil_mdnode *output_buffer_metadata_tag_nodes[] = {
-      node4, output_buffer_type // kDxilTypedBufferElementTypeTag -> DXIL_COMP_TYPE_U32
+      buffer_element_type_tag, output_buffer_element_type
    };
    const struct dxil_mdnode *output_buffer_metadata_tags = dxil_get_metadata_node(m, output_buffer_metadata_tag_nodes, ARRAY_SIZE(output_buffer_metadata_tag_nodes));
 
    const struct dxil_mdnode *output_buffer_name = dxil_get_metadata_string(m, "OutputBuffer");
    const struct dxil_mdnode *node12 = dxil_get_metadata_value(m, int1_type, int1_0);
    const struct dxil_mdnode *node3 = dxil_get_metadata_int32(m, 1);
+   const struct dxil_mdnode *node4 = dxil_get_metadata_int32(m, 0);
    const struct dxil_mdnode *output_buffer_fields[] = {
       node4, // resource id: 0 (for createHandle)
       node9, // pointer to a global constant symbol
