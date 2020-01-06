@@ -35,11 +35,11 @@
 static bool
 emit_llvm_ident(struct dxil_module *m)
 {
-   const struct dxil_mdnode *compiler = dxil_add_metadata_string(m, "Mesa version " PACKAGE_VERSION MESA_GIT_SHA1);
+   const struct dxil_mdnode *compiler = dxil_get_metadata_string(m, "Mesa version " PACKAGE_VERSION MESA_GIT_SHA1);
    if (!compiler)
       return false;
 
-   const struct dxil_mdnode *llvm_ident = dxil_add_metadata_node(m, &compiler, 1);
+   const struct dxil_mdnode *llvm_ident = dxil_get_metadata_node(m, &compiler, 1);
    return llvm_ident &&
           dxil_add_metadata_named_node(m, "llvm.ident", &llvm_ident, 1);
 }
@@ -47,10 +47,10 @@ emit_llvm_ident(struct dxil_module *m)
 static bool
 emit_dx_versions(struct dxil_module *m, int major, int minor)
 {
-   const struct dxil_mdnode *major_node = dxil_add_metadata_int32(m, major);
-   const struct dxil_mdnode *minor_node = dxil_add_metadata_int32(m, minor);
+   const struct dxil_mdnode *major_node = dxil_get_metadata_int32(m, major);
+   const struct dxil_mdnode *minor_node = dxil_get_metadata_int32(m, minor);
    const struct dxil_mdnode *version_nodes[] = { major_node, minor_node };
-   const struct dxil_mdnode *version = dxil_add_metadata_node(m, version_nodes,
+   const struct dxil_mdnode *version = dxil_get_metadata_node(m, version_nodes,
                                                      ARRAY_SIZE(version_nodes));
    return dxil_add_metadata_named_node(m, "dx.version", &version, 1) &&
           dxil_add_metadata_named_node(m, "dx.valver", &version, 1);
@@ -59,12 +59,12 @@ emit_dx_versions(struct dxil_module *m, int major, int minor)
 static bool
 emit_dx_shader_model(struct dxil_module *m, const char *type, int major, int minor)
 {
-   const struct dxil_mdnode *type_node = dxil_add_metadata_string(m, type);
-   const struct dxil_mdnode *major_node = dxil_add_metadata_int32(m, major);
-   const struct dxil_mdnode *minor_node = dxil_add_metadata_int32(m, minor);
+   const struct dxil_mdnode *type_node = dxil_get_metadata_string(m, type);
+   const struct dxil_mdnode *major_node = dxil_get_metadata_int32(m, major);
+   const struct dxil_mdnode *minor_node = dxil_get_metadata_int32(m, minor);
    const struct dxil_mdnode *shader_model[] = { type_node, major_node,
                                                 minor_node };
-   const struct dxil_mdnode *dx_shader_model = dxil_add_metadata_node(m, shader_model, ARRAY_SIZE(shader_model));
+   const struct dxil_mdnode *dx_shader_model = dxil_get_metadata_node(m, shader_model, ARRAY_SIZE(shader_model));
 
    return dxil_add_metadata_named_node(m, "dx.shaderModel",
                                        &dx_shader_model, 1);
@@ -170,18 +170,18 @@ emit_module(struct dxil_module *m)
       return false;
 
    const dxil_value rwbuffer_pointer_undef = dxil_module_get_undef(m, rwbuffer_pointer_type);
-   const struct dxil_mdnode *node9 = dxil_add_metadata_value(m, rwbuffer_pointer_type, rwbuffer_pointer_undef);
-   const struct dxil_mdnode *node11 = dxil_add_metadata_int32(m, 10);
+   const struct dxil_mdnode *node9 = dxil_get_metadata_value(m, rwbuffer_pointer_type, rwbuffer_pointer_undef);
+   const struct dxil_mdnode *node11 = dxil_get_metadata_int32(m, 10);
 
    const dxil_value int1_0 = dxil_module_get_int1_const(m, false);
-   const struct dxil_mdnode *node4 = dxil_add_metadata_int32(m, 0);
-   const struct dxil_mdnode *node13 = dxil_add_metadata_int32(m, 5);
+   const struct dxil_mdnode *node4 = dxil_get_metadata_int32(m, 0);
+   const struct dxil_mdnode *node13 = dxil_get_metadata_int32(m, 5);
    const struct dxil_mdnode *nodes_4_13[] = { node4, node13 }; // kDxilTypedBufferElementTypeTag -> DXIL_COMP_TYPE_U32
-   const struct dxil_mdnode *node14 = dxil_add_metadata_node(m, nodes_4_13, ARRAY_SIZE(nodes_4_13)); // list
+   const struct dxil_mdnode *node14 = dxil_get_metadata_node(m, nodes_4_13, ARRAY_SIZE(nodes_4_13)); // list
 
-   const struct dxil_mdnode *output_buffer_name = dxil_add_metadata_string(m, "OutputBuffer");
-   const struct dxil_mdnode *node12 = dxil_add_metadata_value(m, int1_type, int1_0);
-   const struct dxil_mdnode *node3 = dxil_add_metadata_int32(m, 1);
+   const struct dxil_mdnode *output_buffer_name = dxil_get_metadata_string(m, "OutputBuffer");
+   const struct dxil_mdnode *node12 = dxil_get_metadata_value(m, int1_type, int1_0);
+   const struct dxil_mdnode *node3 = dxil_get_metadata_int32(m, 1);
    const struct dxil_mdnode *output_buffer_fields[] = {
       node4, // resource id: 0 (for createHandle)
       node9, // pointer to a global constant symbol
@@ -195,36 +195,36 @@ emit_module(struct dxil_module *m)
       node12, // UAV is ROV
       node14 // list of additional tag-value pairs
    };
-   const struct dxil_mdnode *output_buffer_node = dxil_add_metadata_node(m, output_buffer_fields, ARRAY_SIZE(output_buffer_fields));
-   const struct dxil_mdnode *uav_metadata = dxil_add_metadata_node(m, &output_buffer_node, 1);
+   const struct dxil_mdnode *output_buffer_node = dxil_get_metadata_node(m, output_buffer_fields, ARRAY_SIZE(output_buffer_fields));
+   const struct dxil_mdnode *uav_metadata = dxil_get_metadata_node(m, &output_buffer_node, 1);
 
    const struct dxil_mdnode *resources_nodes[] = { NULL, uav_metadata, NULL, NULL };
-   const struct dxil_mdnode *resources_node = dxil_add_metadata_node(m, resources_nodes,
+   const struct dxil_mdnode *resources_node = dxil_get_metadata_node(m, resources_nodes,
                                                       ARRAY_SIZE(resources_nodes));
 
    const dxil_value rwbuffer_struct_undef = dxil_module_get_undef(m, rwbuffer_struct_type);
 
-   const struct dxil_mdnode *main_entrypoint = dxil_add_metadata_value(m, main_func_pointer_type, 1);
-   const struct dxil_mdnode *node27 = dxil_add_metadata_node(m, NULL, 0);
+   const struct dxil_mdnode *main_entrypoint = dxil_get_metadata_value(m, main_func_pointer_type, 1);
+   const struct dxil_mdnode *node27 = dxil_get_metadata_node(m, NULL, 0);
 
    const struct dxil_mdnode *nodes_4_27_27[] = { node4, node27, node27 };
-   const struct dxil_mdnode *node28 = dxil_add_metadata_node(m, nodes_4_27_27,
+   const struct dxil_mdnode *node28 = dxil_get_metadata_node(m, nodes_4_27_27,
                                                       ARRAY_SIZE(nodes_4_27_27));
 
-   const struct dxil_mdnode *node29 = dxil_add_metadata_node(m, &node28, 1);
+   const struct dxil_mdnode *node29 = dxil_get_metadata_node(m, &node28, 1);
 
    const struct dxil_mdnode *nodes_3_26_29[] = { node3, main_entrypoint, node29 };
-   const struct dxil_mdnode *main_type_annotation = dxil_add_metadata_node(m, nodes_3_26_29, ARRAY_SIZE(nodes_3_26_29));
+   const struct dxil_mdnode *main_type_annotation = dxil_get_metadata_node(m, nodes_3_26_29, ARRAY_SIZE(nodes_3_26_29));
 
-   const struct dxil_mdnode *main_name = dxil_add_metadata_string(m, "main");
+   const struct dxil_mdnode *main_name = dxil_get_metadata_string(m, "main");
 
    const struct dxil_mdnode *nodes_3_3_3[] = { node3, node3, node3 };
-   const struct dxil_mdnode *node32 = dxil_add_metadata_node(m, nodes_3_3_3,
+   const struct dxil_mdnode *node32 = dxil_get_metadata_node(m, nodes_3_3_3,
                                                       ARRAY_SIZE(nodes_3_3_3));
 
-   const struct dxil_mdnode *node19 = dxil_add_metadata_int32(m, 4);
+   const struct dxil_mdnode *node19 = dxil_get_metadata_int32(m, 4);
    const struct dxil_mdnode *nodes_19_32[] = { node19, node32 };
-   const struct dxil_mdnode *node33 = dxil_add_metadata_node(m, nodes_19_32,
+   const struct dxil_mdnode *node33 = dxil_get_metadata_node(m, nodes_19_32,
                                                       ARRAY_SIZE(nodes_19_32));
    const struct dxil_mdnode *main_entrypoint_metadata[] = {
       main_entrypoint,
@@ -235,7 +235,7 @@ emit_module(struct dxil_module *m)
    };
    const struct dxil_mdnode *dx_resources = resources_node,
                      *dx_type_annotations[] = { main_type_annotation },
-                     *dx_entry_point = dxil_add_metadata_node(m, main_entrypoint_metadata,
+                     *dx_entry_point = dxil_get_metadata_node(m, main_entrypoint_metadata,
                                                               ARRAY_SIZE(main_entrypoint_metadata));
 
    if (!dxil_add_metadata_named_node(m, "dx.resources",
