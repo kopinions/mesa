@@ -190,7 +190,7 @@ dxil_emit_attribute_table(struct dxil_module *m,
 
 const dxil_value
 dxil_add_global_var(struct dxil_module *m, const struct dxil_type *type,
-                   bool constant, int align);
+                    bool constant, int align);
 
 const dxil_value
 dxil_add_function_def(struct dxil_module *m, const char *name,
