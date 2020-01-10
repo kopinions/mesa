@@ -79,9 +79,9 @@ enum dxil_blockinfo_code {
 };
 
 enum dxil_attr_kind {
-  DXIL_ATTR_KIND_NO_UNWIND = 18,
-  DXIL_ATTR_KIND_READ_NONE = 20,
-  DXIL_ATTR_KIND_READ_ONLY = 21,
+   DXIL_ATTR_KIND_NO_UNWIND = 18,
+   DXIL_ATTR_KIND_READ_NONE = 20,
+   DXIL_ATTR_KIND_READ_ONLY = 21,
 };
 
 struct dxil_attrib {
