@@ -254,7 +254,7 @@ emit_module(struct dxil_module *m)
    const struct dxil_mdnode *resources_node = dxil_get_metadata_node(m, resources_nodes,
                                                       ARRAY_SIZE(resources_nodes));
 
-   const struct dxil_mdnode *main_entrypoint = dxil_get_metadata_value(m, main_func_pointer_type, 1);
+   const struct dxil_mdnode *main_entrypoint = dxil_get_metadata_value(m, main_func_pointer_type, main_func);
    const struct dxil_mdnode *node27 = dxil_get_metadata_node(m, NULL, 0);
 
    const struct dxil_mdnode *node4 = dxil_get_metadata_int32(m, 0);
