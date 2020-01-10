@@ -256,8 +256,7 @@ struct ntd_context {
    struct dxil_def *defs;
    unsigned num_defs;
 
-   const struct dxil_func *unary_func,
-                          *binary_func,
+   const struct dxil_func *binary_func,
                           *threadid_func,
                           *bufferstore_func,
                           *createhandle_func;
