@@ -170,13 +170,13 @@ if gallium_drivers.contains('auto')
     # TODO: PPC, Sparc
     if ['x86', 'x86_64'].contains(host_machine.cpu_family())
       gallium_drivers = [
-        'r300', 'r600', 'radeonsi', 'nouveau', 'virgl', 'svga', 'swrast',
-        'iris'
+        'r300', 'r600', 'radeonsi', 'nouveau', 'virgl', 'svga', 'swrast', 
+		'iris', 'genbu'
       ]
     elif ['arm', 'aarch64'].contains(host_machine.cpu_family())
       gallium_drivers = [
         'kmsro', 'v3d', 'vc4', 'freedreno', 'etnaviv', 'nouveau',
-        'tegra', 'virgl', 'lima', 'panfrost', 'swrast'
+        'tegra', 'virgl', 'lima', 'panfrost', 'swrast', 'genbu'
       ]
     else
       error('Unknown architecture @0@. Please pass -Dgallium-drivers to set driver options. Patches gladly accepted to fix this.'.format(
@@ -208,6 +208,7 @@ with_gallium_virgl = gallium_drivers.contains('virgl')
 with_gallium_swr = gallium_drivers.contains('swr')
 with_gallium_lima = gallium_drivers.contains('lima')
 with_gallium_zink = gallium_drivers.contains('zink')
+with_gallium_genbu = gallium_drivers.contains('genbu')
 
 if cc.get_id().startswith('intel') and meson.version().version_compare('< 0.49.1')
   error('Meson does not have sufficient support of ICC before 0.49.1 to compile mesa')

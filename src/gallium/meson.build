@@ -163,6 +163,12 @@ else
   driver_zink = declare_dependency()
 endif
 
+if with_gallium_genbu
+  subdir('drivers/genbu')
+else
+  driver_genbu = declare_dependency()
+endif
+
 if with_gallium_opencl
   # TODO: this isn't really clover specific, but ATM clover is the only
   # consumer
