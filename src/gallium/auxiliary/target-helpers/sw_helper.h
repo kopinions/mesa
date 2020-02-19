@@ -24,6 +24,10 @@
 #include "llvmpipe/lp_public.h"
 #endif
 
+#ifdef GALLIUM_GENBU
+#include "genbu/genbu_public.h"
+#endif
+
 #ifdef GALLIUM_SWR
 #include "swr/swr_public.h"
 #endif
@@ -41,6 +45,11 @@ sw_screen_create_named(struct sw_winsys *winsys, const char *driver)
 #if defined(GALLIUM_LLVMPIPE)
    if (screen == NULL && strcmp(driver, "llvmpipe") == 0)
       screen = llvmpipe_create_screen(winsys);
+#endif
+
+#if defined(GALLIUM_GENBU)
+   if (screen == NULL && strcmp(driver, "genbu") == 0)
+      screen = genbu_create_screen(winsys);
 #endif
 
 #if defined(GALLIUM_VIRGL)
