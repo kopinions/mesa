@@ -1307,6 +1307,7 @@ dep_libdrm_amdgpu = null_dep
 dep_libdrm_radeon = null_dep
 dep_libdrm_nouveau = null_dep
 dep_libdrm_intel = null_dep
+dep_libdrm_genbu = null_dep
 
 _drm_amdgpu_ver = '2.4.100'
 _drm_radeon_ver = '2.4.71'

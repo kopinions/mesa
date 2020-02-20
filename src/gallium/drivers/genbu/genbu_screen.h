@@ -5,17 +5,23 @@
 #include "pipe/p_defines.h"
 #include "os/os_thread.h"
 
-struct sw_winsys;
+struct genbu_winsys;
 
 struct genbu_screen
 {
    struct pipe_screen base;
 
-   struct sw_winsys *winsys;
+   struct genbu_winsys *gws;
+
+   struct {
+      boolean tiling;
+      boolean lie;
+      boolean use_blitter;
+   } debug;
 };
 
 static inline struct genbu_screen *
-genbu_screen( struct pipe_screen *pipe )
+cast2_genbu_screen( struct pipe_screen *pipe )
 {
    return (struct genbu_screen *)pipe;
 }

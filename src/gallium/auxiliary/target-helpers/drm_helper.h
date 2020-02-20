@@ -36,6 +36,36 @@ pipe_i915_create_screen(int fd, const struct pipe_screen_config *config)
 
 #endif
 
+#ifdef GALLIUM_GENBU
+#include "genbu/drm/genbu_drm_public.h"
+#include "genbu/genbu_public.h"
+
+struct pipe_screen *
+pipe_genbu_create_screen(int fd, const struct pipe_screen_config *config)
+{
+   struct genbu_winsys *gws;
+   struct pipe_screen *screen;
+
+   gws = genbu_drm_winsys_create(fd);
+   if (!gws)
+      return NULL;
+
+   screen = genbu_create_screen(gws);
+   return screen ? debug_screen_wrap(screen) : NULL;
+}
+
+#else
+
+struct pipe_screen *
+pipe_genbu_create_screen(int fd, const struct pipe_screen_config *config)
+{
+   fprintf(stderr, "genbu: driver missing\n");
+   return NULL;
+}
+
+#endif
+
+
 #ifdef GALLIUM_IRIS
 #include "iris/drm/iris_drm_public.h"
 

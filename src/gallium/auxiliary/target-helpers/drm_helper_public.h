@@ -13,6 +13,9 @@ struct pipe_screen *
 pipe_i915_create_screen(int fd, const struct pipe_screen_config *config);
 
 struct pipe_screen *
+pipe_genbu_create_screen(int fd, const struct pipe_screen_config *config);
+
+struct pipe_screen *
 pipe_iris_create_screen(int fd, const struct pipe_screen_config *config);
 
 struct pipe_screen *

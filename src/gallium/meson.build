@@ -164,6 +164,7 @@ else
 endif
 
 if with_gallium_genbu
+  subdir('winsys/genbu/drm')
   subdir('drivers/genbu')
 else
   driver_genbu = declare_dependency()

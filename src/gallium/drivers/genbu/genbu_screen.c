@@ -4,7 +4,7 @@
 #include "genbu_public.h"
 
 struct pipe_screen *
-genbu_create_screen(struct sw_winsys *winsys)
+genbu_create_screen(struct genbu_winsys *winsys)
 {
    struct genbu_screen *screen;
 
@@ -13,7 +13,7 @@ genbu_create_screen(struct sw_winsys *winsys)
       return NULL;
 
 
-   screen->winsys = winsys;
+   screen->gws = winsys;
    
    return &screen->base;
 }

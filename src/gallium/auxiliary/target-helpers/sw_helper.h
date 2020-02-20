@@ -47,11 +47,6 @@ sw_screen_create_named(struct sw_winsys *winsys, const char *driver)
       screen = llvmpipe_create_screen(winsys);
 #endif
 
-#if defined(GALLIUM_GENBU)
-   if (screen == NULL && strcmp(driver, "genbu") == 0)
-      screen = genbu_create_screen(winsys);
-#endif
-
 #if defined(GALLIUM_VIRGL)
    if (screen == NULL && strcmp(driver, "virpipe") == 0) {
       struct virgl_winsys *vws;

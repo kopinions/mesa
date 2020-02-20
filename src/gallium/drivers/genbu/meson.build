@@ -1,17 +1,13 @@
-test_h = custom_target(
-  'test.h',
-  output : 'test.h',
-  command : ['touch', '@OUTPUT@'],
-  build_always : true,
-)
-
 inc_genbu = files(
     'genbu_public.h',
     'genbu_screen.h',
+    'genbu_winsys.h',
+    'genbu_context.h'
 )
 
 files_genbu = files(
-  'genbu_screen.c'
+  'genbu_screen.c',
+  'genbu_context.c',
 )
 
 libgenbu = static_library(
@@ -23,5 +19,5 @@ libgenbu = static_library(
 
 driver_genbu = declare_dependency(
     compile_args : '-DGALLIUM_GENBU',
-    link_with : libgenbu,
+    link_with : [libgenbu, libgenbudrm],
 )

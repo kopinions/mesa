@@ -71,6 +71,10 @@ static const struct drm_driver_descriptor driver_descriptors[] = {
         .create_screen = pipe_i915_create_screen,
     },
     {
+       .driver_name = "genbu",
+       .create_screen = pipe_genbu_create_screen,
+    },
+    {
         .driver_name = "iris",
         .create_screen = pipe_iris_create_screen,
         .driconf_xml = &iris_driconf_xml,

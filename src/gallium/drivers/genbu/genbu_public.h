@@ -6,10 +6,10 @@ extern "C" {
 #endif
 
 struct pipe_screen;
-struct sw_winsys;
+struct genbu_winsys;
 
 struct pipe_screen *
-genbu_create_screen(struct sw_winsys *winsys);
+genbu_create_screen(struct genbu_winsys *winsys);
 
 #ifdef __cplusplus
 }
