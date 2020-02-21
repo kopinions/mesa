@@ -12,7 +12,7 @@
 #include "pipe/p_screen.h"
 
 DEBUG_GET_ONCE_BOOL_OPTION(genbu_no_vbuf, "GENBU_NO_VBUF", FALSE)
-   
+ 
 static void
 genbu_destroy(struct pipe_context *pipe) {
 
@@ -20,10 +20,10 @@ genbu_destroy(struct pipe_context *pipe) {
 
 static void
 genbu_draw_vbo(struct pipe_context *pipe, const struct pipe_draw_info *info) {
-   
+
 }
 
-struct pipe_context *genbu_create_context(struct pipe_screen *screen,
+struct pipe_context *genbu_context_create(struct pipe_screen *screen,
                                           void *priv, unsigned flags) {
    struct genbu_context *genbu = CALLOC_STRUCT(genbu_context);
    if (!genbu)
@@ -117,3 +117,7 @@ struct draw_stage *genbu_draw_vbuf_stage(struct genbu_context *genbu)
 }
 
 
+struct draw_stage *genbu_draw_render_stage( struct genbu_context *genbu) {
+   struct draw_stage *stage;
+   return stage;
+}

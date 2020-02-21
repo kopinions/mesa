@@ -89,7 +89,7 @@ struct genbu_context {
    struct blitter_context* blitter;
 };
 
-struct pipe_context *genbu_create_context(struct pipe_screen *screen,
+struct pipe_context *genbu_context_create(struct pipe_screen *screen,
 					 void *priv, unsigned flags);
 
 static inline struct genbu_context *

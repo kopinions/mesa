@@ -9,6 +9,8 @@ struct genbu_winsys {
     * Destroy the winsys.
     */
    void (*destroy)(struct genbu_winsys *gws);
+
+   int (*aperture_size)(struct genbu_winsys *iws);
 };
 
 #endif//GENBU_WINSYS_H

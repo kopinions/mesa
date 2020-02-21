@@ -9,6 +9,18 @@
 #include "genbu_drm_public.h"
 #include "util/u_memory.h"
 
+static int
+genbu_drm_aperture_size(struct genbu_winsys *gws)
+{
+   struct genbu_drm_winsys *gdws = genbu_drm_winsys(gws);
+   size_t aper_size, mappable_size;
+
+   // TODO: drm_intel_get_aperture_sizes(gdws->fd, &mappable_size, &aper_size);
+
+   return aper_size >> 20;
+}
+
+    
 struct genbu_winsys *
 genbu_drm_winsys_create(int drmFD)
 {
@@ -19,6 +31,8 @@ genbu_drm_winsys_create(int drmFD)
    if (!gdws) {
       return NULL;
    }
+
+   gdws->base.aperture_size = genbu_drm_aperture_size;
 
    return &gdws->base;
 }
