@@ -267,6 +267,39 @@ genbu_get_param(struct pipe_screen *screen, enum pipe_cap cap)
    }
 }
 
+static float
+genbu_get_paramf(struct pipe_screen *screen, enum pipe_capf cap)
+{
+   switch(cap) {
+   case PIPE_CAPF_MAX_LINE_WIDTH:
+      /* fall-through */
+   case PIPE_CAPF_MAX_LINE_WIDTH_AA:
+      return 7.5;
+
+   case PIPE_CAPF_MAX_POINT_WIDTH:
+      /* fall-through */
+   case PIPE_CAPF_MAX_POINT_WIDTH_AA:
+      return 255.0;
+
+   case PIPE_CAPF_MAX_TEXTURE_ANISOTROPY:
+      return 4.0;
+
+   case PIPE_CAPF_MAX_TEXTURE_LOD_BIAS:
+      return 16.0;
+
+   case PIPE_CAPF_MIN_CONSERVATIVE_RASTER_DILATE:
+      /* fall-through */
+   case PIPE_CAPF_MAX_CONSERVATIVE_RASTER_DILATE:
+      /* fall-through */
+   case PIPE_CAPF_CONSERVATIVE_RASTER_DILATE_GRANULARITY:
+      return 0.0f;
+
+   default:
+      debug_printf("%s: Unknown cap %u.\n", __FUNCTION__, cap);
+      return 0;
+   }
+}
+
 struct pipe_screen *
 genbu_create_screen(struct genbu_winsys *winsys)
 {
@@ -280,6 +313,7 @@ genbu_create_screen(struct genbu_winsys *winsys)
    screen->gws = winsys;
 
    screen->base.get_param = genbu_get_param;
+   screen->base.get_paramf = genbu_get_paramf;
 
    screen->base.context_create = genbu_context_create;
    screen->base.destroy = genbu_screen_destroy;
