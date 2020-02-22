@@ -464,6 +464,35 @@ genbu_is_format_supported(struct pipe_screen *screen,
    return false;
 }
 
+static const char *
+genbu_get_name(struct pipe_screen *screen)
+{
+   static char buffer[128];
+   const char *chipset;
+
+   switch (cast2_genbu_screen(screen)->gws->pci_id) {
+   default:
+      chipset = "v1";
+      break;
+   }
+
+   snprintf(buffer, sizeof(buffer), "genbu (chipset: %s)", chipset);
+   return buffer;
+}
+
+
+static const char *
+genbu_get_vendor(struct pipe_screen *screen)
+{
+   return "Sietium";
+}
+
+static const char *
+genbu_get_device_vendor(struct pipe_screen *screen)
+{
+   return "Sietium";
+}
+
 struct pipe_screen *
 genbu_create_screen(struct genbu_winsys *winsys)
 {
@@ -475,12 +504,14 @@ genbu_create_screen(struct genbu_winsys *winsys)
 
 
    screen->gws = winsys;
-
+   screen->base.get_name = genbu_get_name;
+   screen->base.get_vendor = genbu_get_vendor;
+   screen->base.get_device_vendor = genbu_get_device_vendor;
    screen->base.get_param = genbu_get_param;
    screen->base.get_paramf = genbu_get_paramf;
    screen->base.get_shader_param = genbu_get_shader_param;
    screen->base.is_format_supported = genbu_is_format_supported;
-
+   
    screen->base.context_create = genbu_context_create;
    screen->base.destroy = genbu_screen_destroy;
    return &screen->base;
