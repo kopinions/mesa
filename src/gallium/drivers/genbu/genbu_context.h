@@ -11,7 +11,8 @@
 
 #include "util/slab.h"
 #include "util/u_blitter.h"
-   
+
+#define GENBU_TEX_UNITS 8
 #define GENBU_MAX_IMMEDIATE        8
 #define GENBU_MAX_DYNAMIC          14
 

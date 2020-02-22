@@ -1,3 +1,4 @@
+#include "draw/draw_context.h"
 #include "util/u_memory.h"
 #include "util/u_screen.h"
 
@@ -5,6 +6,7 @@
 #include "genbu_context.h"
 #include "genbu_resource.h"
 #include "genbu_public.h"
+#include "genbu_reg.h"
 
 static void
 genbu_screen_destroy(struct pipe_screen *screen)
@@ -300,6 +302,87 @@ genbu_get_paramf(struct pipe_screen *screen, enum pipe_capf cap)
    }
 }
 
+static int
+genbu_get_shader_param(struct pipe_screen *screen,
+                      enum pipe_shader_type shader,
+                      enum pipe_shader_cap cap)
+{
+   switch(shader) {
+   case PIPE_SHADER_VERTEX:
+      switch (cap) {
+      case PIPE_SHADER_CAP_MAX_TEXTURE_SAMPLERS:
+      case PIPE_SHADER_CAP_MAX_SAMPLER_VIEWS:
+         if (debug_get_bool_option("DRAW_USE_LLVM", TRUE))
+            return PIPE_MAX_SAMPLERS;
+         else
+            return 0;
+       default:
+         return draw_get_shader_param(shader, cap);
+      }
+   case PIPE_SHADER_FRAGMENT:
+      /* XXX: some of these are just shader model 2.0 values, fix this! */
+      switch(cap) {
+      case PIPE_SHADER_CAP_MAX_INSTRUCTIONS:
+         return GENBU_MAX_ALU_INSN + GENBU_MAX_TEX_INSN;
+      case PIPE_SHADER_CAP_MAX_ALU_INSTRUCTIONS:
+         return GENBU_MAX_ALU_INSN;
+      case PIPE_SHADER_CAP_MAX_TEX_INSTRUCTIONS:
+         return GENBU_MAX_TEX_INSN;
+      case PIPE_SHADER_CAP_MAX_TEX_INDIRECTIONS:
+         return 8;
+      case PIPE_SHADER_CAP_MAX_CONTROL_FLOW_DEPTH:
+         return 0;
+      case PIPE_SHADER_CAP_MAX_INPUTS:
+         return 10;
+      case PIPE_SHADER_CAP_MAX_OUTPUTS:
+         return 1;
+      case PIPE_SHADER_CAP_MAX_CONST_BUFFER_SIZE:
+         return 32 * sizeof(float[4]);
+      case PIPE_SHADER_CAP_MAX_CONST_BUFFERS:
+         return 1;
+      case PIPE_SHADER_CAP_MAX_TEMPS:
+         return 12; /* XXX: 12 -> 32 ? */
+      case PIPE_SHADER_CAP_TGSI_CONT_SUPPORTED:
+      case PIPE_SHADER_CAP_TGSI_SQRT_SUPPORTED:
+         return 0;
+      case PIPE_SHADER_CAP_INDIRECT_INPUT_ADDR:
+      case PIPE_SHADER_CAP_INDIRECT_OUTPUT_ADDR:
+      case PIPE_SHADER_CAP_INDIRECT_TEMP_ADDR:
+      case PIPE_SHADER_CAP_INDIRECT_CONST_ADDR:
+         return 1;
+      case PIPE_SHADER_CAP_SUBROUTINES:
+         return 0;
+      case PIPE_SHADER_CAP_INTEGERS:
+      case PIPE_SHADER_CAP_INT64_ATOMICS:
+      case PIPE_SHADER_CAP_FP16:
+         return 0;
+      case PIPE_SHADER_CAP_MAX_TEXTURE_SAMPLERS:
+      case PIPE_SHADER_CAP_MAX_SAMPLER_VIEWS:
+         return GENBU_TEX_UNITS;
+      case PIPE_SHADER_CAP_TGSI_DROUND_SUPPORTED:
+      case PIPE_SHADER_CAP_TGSI_DFRACEXP_DLDEXP_SUPPORTED:
+      case PIPE_SHADER_CAP_TGSI_LDEXP_SUPPORTED:
+      case PIPE_SHADER_CAP_TGSI_FMA_SUPPORTED:
+      case PIPE_SHADER_CAP_TGSI_ANY_INOUT_DECL_RANGE:
+      case PIPE_SHADER_CAP_MAX_SHADER_BUFFERS:
+      case PIPE_SHADER_CAP_MAX_SHADER_IMAGES:
+      case PIPE_SHADER_CAP_LOWER_IF_THRESHOLD:
+      case PIPE_SHADER_CAP_PREFERRED_IR:
+      case PIPE_SHADER_CAP_TGSI_SKIP_MERGE_REGISTERS:
+         return 0;
+      case PIPE_SHADER_CAP_MAX_UNROLL_ITERATIONS_HINT:
+         return 32;
+      default:
+         debug_printf("%s: Unknown cap %u.\n", __FUNCTION__, cap);
+         return 0;
+      }
+      break;
+   default:
+      return 0;
+   }
+
+}
+
 struct pipe_screen *
 genbu_create_screen(struct genbu_winsys *winsys)
 {
@@ -314,6 +397,7 @@ genbu_create_screen(struct genbu_winsys *winsys)
 
    screen->base.get_param = genbu_get_param;
    screen->base.get_paramf = genbu_get_paramf;
+   screen->base.get_shader_param = genbu_get_shader_param;
 
    screen->base.context_create = genbu_context_create;
    screen->base.destroy = genbu_screen_destroy;
