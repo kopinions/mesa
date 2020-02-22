@@ -383,6 +383,87 @@ genbu_get_shader_param(struct pipe_screen *screen,
 
 }
 
+bool
+genbu_is_format_supported(struct pipe_screen *screen,
+                         enum pipe_format format,
+                         enum pipe_texture_target target,
+                         unsigned sample_count,
+                         unsigned storage_sample_count,
+                         unsigned tex_usage)
+{
+   static const enum pipe_format tex_supported[] = {
+      PIPE_FORMAT_B8G8R8A8_UNORM,
+      PIPE_FORMAT_B8G8R8A8_SRGB,
+      PIPE_FORMAT_B8G8R8X8_UNORM,
+      PIPE_FORMAT_R8G8B8A8_UNORM,
+      PIPE_FORMAT_R8G8B8X8_UNORM,
+      PIPE_FORMAT_B4G4R4A4_UNORM,
+      PIPE_FORMAT_B5G6R5_UNORM,
+      PIPE_FORMAT_B5G5R5A1_UNORM,
+      PIPE_FORMAT_B10G10R10A2_UNORM,
+      PIPE_FORMAT_L8_UNORM,
+      PIPE_FORMAT_A8_UNORM,
+      PIPE_FORMAT_I8_UNORM,
+      PIPE_FORMAT_L8A8_UNORM,
+      PIPE_FORMAT_UYVY,
+      PIPE_FORMAT_YUYV,
+      /* XXX why not?
+      PIPE_FORMAT_Z16_UNORM, */
+      PIPE_FORMAT_DXT1_RGB,
+      PIPE_FORMAT_DXT1_RGBA,
+      PIPE_FORMAT_DXT3_RGBA,
+      PIPE_FORMAT_DXT5_RGBA,
+      PIPE_FORMAT_Z24X8_UNORM,
+      PIPE_FORMAT_Z24_UNORM_S8_UINT,
+      PIPE_FORMAT_NONE  /* list terminator */
+   };
+   static const enum pipe_format render_supported[] = {
+      PIPE_FORMAT_B8G8R8A8_UNORM,
+      PIPE_FORMAT_B8G8R8X8_UNORM,
+      PIPE_FORMAT_R8G8B8A8_UNORM,
+      PIPE_FORMAT_R8G8B8X8_UNORM,
+      PIPE_FORMAT_B5G6R5_UNORM,
+      PIPE_FORMAT_B5G5R5A1_UNORM,
+      PIPE_FORMAT_B4G4R4A4_UNORM,
+      PIPE_FORMAT_B10G10R10A2_UNORM,
+      PIPE_FORMAT_L8_UNORM,
+      PIPE_FORMAT_A8_UNORM,
+      PIPE_FORMAT_I8_UNORM,
+      PIPE_FORMAT_NONE  /* list terminator */
+   };
+   static const enum pipe_format depth_supported[] = {
+      /* XXX why not?
+      PIPE_FORMAT_Z16_UNORM, */
+      PIPE_FORMAT_Z24X8_UNORM,
+      PIPE_FORMAT_Z24_UNORM_S8_UINT,
+      PIPE_FORMAT_NONE  /* list terminator */
+   };
+   const enum pipe_format *list;
+   uint i;
+
+   if (sample_count > 1)
+      return false;
+
+   if (MAX2(1, sample_count) != MAX2(1, storage_sample_count))
+      return false;
+
+   if(tex_usage & PIPE_BIND_DEPTH_STENCIL)
+      list = depth_supported;
+   else if (tex_usage & PIPE_BIND_RENDER_TARGET)
+      list = render_supported;
+   else if (tex_usage & PIPE_BIND_SAMPLER_VIEW)
+      list = tex_supported;
+   else
+      return true; /* PIPE_BIND_{VERTEX,INDEX}_BUFFER */
+
+   for (i = 0; list[i] != PIPE_FORMAT_NONE; i++) {
+      if (list[i] == format)
+         return true;
+   }
+
+   return false;
+}
+
 struct pipe_screen *
 genbu_create_screen(struct genbu_winsys *winsys)
 {
@@ -398,6 +479,7 @@ genbu_create_screen(struct genbu_winsys *winsys)
    screen->base.get_param = genbu_get_param;
    screen->base.get_paramf = genbu_get_paramf;
    screen->base.get_shader_param = genbu_get_shader_param;
+   screen->base.is_format_supported = genbu_is_format_supported;
 
    screen->base.context_create = genbu_context_create;
    screen->base.destroy = genbu_screen_destroy;
