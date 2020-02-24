@@ -189,8 +189,15 @@ genbu_create_depth_stencil_state(struct pipe_context *pipe,
 
 static void *
 genbu_create_sampler_state(struct pipe_context *pipe,
-                                 const struct pipe_sampler_state *depth_stencil) {
+                                 const struct pipe_sampler_state *sampler) {
    struct genbu_sampler_state *cso_data = CALLOC_STRUCT(genbu_sampler_state);
+   return cso_data;
+}
+
+static void *
+genbu_create_rasterizer_state(struct pipe_context *pipe,
+                                 const struct pipe_rasterizer_state *rasterizer) {
+   struct genbu_rasterizer_state *cso_data = CALLOC_STRUCT(genbu_rasterizer_state);
    return cso_data;
 }
 
@@ -200,4 +207,5 @@ genbu_init_state_functions( struct genbu_context *gc )
    gc->base.create_blend_state = genbu_create_blend_state;
    gc->base.create_depth_stencil_alpha_state = genbu_create_depth_stencil_state;
    gc->base.create_sampler_state = genbu_create_sampler_state;
+   gc->base.create_rasterizer_state = genbu_create_rasterizer_state;
 }

@@ -39,6 +39,18 @@ struct genbu_sampler_state {
    unsigned maxlod;
 };
 
+struct genbu_rasterizer_state {
+   struct pipe_rasterizer_state templ;
+   unsigned light_twoside : 1;
+   unsigned st;
+
+   unsigned LIS4;
+   unsigned LIS7;
+   unsigned sc[1];
+
+   union { float f; unsigned u; } ds[2];
+};
+
 struct genbu_context {
    struct pipe_context base;
 
