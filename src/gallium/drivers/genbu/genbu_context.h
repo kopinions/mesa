@@ -32,6 +32,12 @@ struct genbu_depth_stencil_state {
    unsigned depth_LIS6;
 };
 
+struct genbu_sampler_state {
+   struct pipe_sampler_state templ;
+   unsigned state[3];
+   unsigned minlod;
+   unsigned maxlod;
+};
 
 struct genbu_context {
    struct pipe_context base;
