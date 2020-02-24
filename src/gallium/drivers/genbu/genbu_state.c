@@ -201,6 +201,14 @@ genbu_create_rasterizer_state(struct pipe_context *pipe,
    return cso_data;
 }
 
+static void *
+genbu_create_vertex_elements_state(struct pipe_context *pipe,
+                                    unsigned num_elements,
+                                 const struct pipe_vertex_element *rasterizer) {
+   struct genbu_vertex_element_state *cso_data = CALLOC_STRUCT(genbu_vertex_element_state);
+   return cso_data;
+}
+
 void
 genbu_init_state_functions( struct genbu_context *gc )
 {
@@ -208,4 +216,5 @@ genbu_init_state_functions( struct genbu_context *gc )
    gc->base.create_depth_stencil_alpha_state = genbu_create_depth_stencil_state;
    gc->base.create_sampler_state = genbu_create_sampler_state;
    gc->base.create_rasterizer_state = genbu_create_rasterizer_state;
+   gc->base.create_vertex_elements_state = genbu_create_vertex_elements_state;
 }

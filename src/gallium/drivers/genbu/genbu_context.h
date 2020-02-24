@@ -51,6 +51,11 @@ struct genbu_rasterizer_state {
    union { float f; unsigned u; } ds[2];
 };
 
+struct genbu_vertex_element_state {
+   unsigned count;
+   struct pipe_vertex_element velem[PIPE_MAX_ATTRIBS];
+};
+
 struct genbu_context {
    struct pipe_context base;
 
