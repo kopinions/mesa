@@ -546,7 +546,7 @@ static boolean debug_color_blit( struct debug_stream *stream,
    return TRUE;
 }
 
-static boolean debug_modes4( struct debug_stream *stream,
+static boolean debug_stream_modes4( struct debug_stream *stream,
 				  const char *name,
 				  unsigned len )
 {

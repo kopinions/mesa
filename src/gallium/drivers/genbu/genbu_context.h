@@ -16,7 +16,15 @@
 #define GENBU_MAX_IMMEDIATE        8
 #define GENBU_MAX_DYNAMIC          14
 
-   
+struct genbu_blend_state {
+   unsigned iab;
+   unsigned modes4;
+   // load immediate state 5
+   unsigned LIS5;
+   // load immediate state 6
+   unsigned LIS6;
+};
+
 struct genbu_context {
    struct pipe_context base;
 
@@ -26,7 +34,7 @@ struct genbu_context {
 
    /* The most recent drawing state as set by the driver:
     */
-   //TODO: const struct i915_blend_state           *blend;
+   const struct genbu_blend_state           *blend;
    //TODO: const struct i915_sampler_state         *fragment_sampler[PIPE_MAX_SAMPLERS];
    struct pipe_sampler_state               *vertex_samplers[PIPE_MAX_SAMPLERS];
    // TODO: const struct i915_depth_stencil_state   *depth_stencil;
@@ -89,6 +97,8 @@ struct genbu_context {
    /** blitter/hw-clear */
    struct blitter_context* blitter;
 };
+
+
 
 struct pipe_context *genbu_context_create(struct pipe_screen *screen,
 					 void *priv, unsigned flags);

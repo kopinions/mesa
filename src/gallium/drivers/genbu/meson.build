@@ -8,6 +8,7 @@ inc_genbu = files(
 files_genbu = files(
   'genbu_screen.c',
   'genbu_context.c',
+  'genbu_state.c'
 )
 
 libgenbu = static_library(
