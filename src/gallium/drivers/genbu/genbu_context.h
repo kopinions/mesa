@@ -25,6 +25,14 @@ struct genbu_blend_state {
    unsigned LIS6;
 };
 
+struct genbu_depth_stencil_state {
+   unsigned stencil_modes4;
+   unsigned bfo[2];
+   unsigned stencil_LIS5;
+   unsigned depth_LIS6;
+};
+
+
 struct genbu_context {
    struct pipe_context base;
 

@@ -180,8 +180,16 @@ genbu_create_blend_state(struct pipe_context *pipe,
    return cso_data;
 }
 
+static void *
+genbu_create_depth_stencil_state(struct pipe_context *pipe,
+                                 const struct pipe_depth_stencil_alpha_state *depth_stencil) {
+   struct genbu_depth_stencil_state *cso_data = CALLOC_STRUCT(genbu_depth_stencil_state);
+   return cso_data;
+}
+
 void
 genbu_init_state_functions( struct genbu_context *gc )
 {
    gc->base.create_blend_state = genbu_create_blend_state;
+   gc->base.create_depth_stencil_alpha_state = genbu_create_depth_stencil_state;
 }
