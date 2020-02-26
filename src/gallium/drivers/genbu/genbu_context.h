@@ -14,7 +14,12 @@
 
 #define GENBU_TEX_UNITS 8
 #define GENBU_MAX_IMMEDIATE        8
-#define GENBU_MAX_DYNAMIC          14
+#define GENBU_MAX_DYNAMIC 14
+
+#define GENBU_TEX_UNITS 8
+
+#define GENBU_MAX_CONSTANT  32
+
 
 struct genbu_blend_state {
    unsigned iab;

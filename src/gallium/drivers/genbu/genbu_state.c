@@ -1,3 +1,6 @@
+#include "draw/draw_context.h"
+#include "tgsi/tgsi_parse.h"
+
 #include "genbu_reg.h"
 #include "genbu_state.h"
 #include "genbu_context.h"
@@ -209,6 +212,69 @@ genbu_create_vertex_elements_state(struct pipe_context *pipe,
    return cso_data;
 }
 
+struct genbu_fragment_shader {
+   struct pipe_shader_state state;
+
+   struct tgsi_shader_info info;
+
+   struct draw_fragment_shader *draw_data;
+
+   uint *decl;
+   uint decl_len;
+
+   uint *program;
+   uint program_len;
+
+   /**
+    * constants introduced during translation.
+    * These are placed at the end of the constant buffer and grow toward
+    * the beginning (eg: slot 31, 30 29, ...)
+    * User-provided constants start at 0.
+    * This allows both types of constants to co-exist (until there's too many)
+    * and doesn't require regenerating/changing the fragment program to
+    * shuffle constants around.
+    */
+   uint num_constants;
+   float constants[GENBU_MAX_CONSTANT][4];
+
+   /**
+    * Status of each constant
+    * if GENBU_CONSTFLAG_PARAM, the value must be taken from the corresponding
+    * slot of the user's constant buffer. (set by pipe->set_constant_buffer())
+    * Else, the bitmask indicates which components are occupied by immediates.
+    */
+   ubyte constant_flags[GENBU_MAX_CONSTANT];
+
+   /**
+    * The mapping between generics and hw texture coords.
+    * We need to share this between the vertex and fragment stages.
+    **/
+   int generic_mapping[GENBU_TEX_UNITS];
+};
+
+static
+void genbu_translate_fragment_program(struct genbu_context *gc, struct genbu_fragment_shader * gfs) {
+   
+}
+
+static void *
+genbu_create_fs_state(struct pipe_context *pipe, const struct pipe_shader_state *templ) {
+   struct genbu_context *gc = cast2_genbu_context(pipe);
+   struct genbu_fragment_shader *gfs = CALLOC_STRUCT(genbu_fragment_shader);
+   if (!gfs)
+      return NULL;
+
+   gfs->draw_data = draw_create_fragment_shader(gc->draw, templ);
+   gfs->state.tokens = tgsi_dup_tokens(templ->tokens);
+
+   tgsi_scan_shader(templ->tokens, &gfs->info);
+
+   /* The shader's compiled to genbu instructions here */
+   genbu_translate_fragment_program(gc, gfs);
+
+   return gfs;
+}
+
 void
 genbu_init_state_functions( struct genbu_context *gc )
 {
@@ -217,4 +283,6 @@ genbu_init_state_functions( struct genbu_context *gc )
    gc->base.create_sampler_state = genbu_create_sampler_state;
    gc->base.create_rasterizer_state = genbu_create_rasterizer_state;
    gc->base.create_vertex_elements_state = genbu_create_vertex_elements_state;
+
+   gc->base.create_fs_state = genbu_create_fs_state;
 }
