@@ -1,4 +1,9 @@
-#incldue "genbu_drm_winsys.h"
+#include "genbu_drm_winsys.h"
+#include "state_tracker/drm_driver.h"
+#include "genbu_drm_winsys.h"
+#include "util/u_memory.h"
+
+#include "drm-uapi/genbu_drm.h"
 
 static struct genbu_winsys_buffer *
 genbu_drm_buffer_from_handle(struct genbu_winsys *gws,
@@ -27,8 +32,8 @@ genbu_drm_buffer_from_handle(struct genbu_winsys *gws,
    buf->flinked = TRUE;
    buf->flink = whandle->handle;
 
-   if (!buf->bo)
-      goto err;
+   /* if (!buf->bo) */
+   /*    goto err; */
 
    *stride = whandle->stride;
    *tiling = tile;
@@ -50,14 +55,14 @@ genbu_drm_buffer_get_handle(struct genbu_winsys *gws,
 
    if (whandle->type == WINSYS_HANDLE_TYPE_SHARED) {
       if (!buf->flinked) {
-         if (drm_intel_bo_flink(buf->bo, &buf->flink))
-            return FALSE;
+         /* if (drm_intel_bo_flink(buf->bo, &buf->flink)) */
+         /*    return FALSE; */
          buf->flinked = TRUE;
       }
 
       whandle->handle = buf->flink;
    } else if (whandle->type == WINSYS_HANDLE_TYPE_KMS) {
-      whandle->handle = buf->bo->handle;
+      // TODO: whandle->handle = buf->bo->handle;
    } else if (whandle->type == WINSYS_HANDLE_TYPE_FD) {
       int fd;
 
@@ -75,13 +80,13 @@ genbu_drm_buffer_get_handle(struct genbu_winsys *gws,
 
 static
 void genbu_drm_buffer_destroy(struct genbu_winsys *gws,
-                         struct i915_winsys_buffer *buffer)
+                         struct genbu_winsys_buffer *buffer)
 {
    // todo: drm_intel_bo_unreference(intel_bo(buffer));
 
 #ifdef DEBUG
    genbu_drm_buffer(buffer)->magic = 0;
-   genbu_drm_buffer(buffer)->bo = NULL;
+   // TODO: genbu_drm_buffer(buffer)->bo = NULL;
 #endif
 
    FREE(buffer);
@@ -93,7 +98,7 @@ genbu_drm_buffer_create_tiled(struct genbu_winsys *gws,
                              enum genbu_winsys_buffer_tile *tiling,
                              enum genbu_winsys_buffer_type type)
 {
-   struct genbu_drm_buffer *buf = CALLOC_STRUCT(i915_drm_buffer);
+   struct genbu_drm_buffer *buf = CALLOC_STRUCT(genbu_drm_buffer);
    struct genbu_drm_winsys *gdws = genbu_drm_winsys(gws);
    unsigned long pitch = 0;
    uint32_t tiling_mode = *tiling;
@@ -110,8 +115,8 @@ genbu_drm_buffer_create_tiled(struct genbu_winsys *gws,
    /*                                    *stride, height, 1, */
    /*                                    &tiling_mode, &pitch, 0); */
 
-   if (!buf->bo)
-      goto err;
+   /* if (!buf->bo) */
+   /*    goto err; */
 
    *stride = pitch;
    *tiling = tiling_mode;
@@ -127,7 +132,7 @@ void
 genbu_drm_winsys_init_buffer_functions(struct genbu_drm_winsys *gdws)
 {
    gdws->base.buffer_from_handle = genbu_drm_buffer_from_handle;
-   gdws->base.buffer_get_handle = genbu_dram_buffer_get_handle;
-   gdws->base.buffer_destroy = genbu_drm_buffer_destory;
+   gdws->base.buffer_get_handle = genbu_drm_buffer_get_handle;
+   gdws->base.buffer_destroy = genbu_drm_buffer_destroy;
    gdws->base.buffer_create_tiled = genbu_drm_buffer_create_tiled;
 }

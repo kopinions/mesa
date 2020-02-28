@@ -1,6 +1,8 @@
 #ifndef GENBU_WINSYS_H
 #define GENBU_WINSYS_H
 
+#include "pipe/p_compiler.h"
+
 struct genbu_winsys;
 struct genbu_winsys_buffer;
 struct winsys_handle;

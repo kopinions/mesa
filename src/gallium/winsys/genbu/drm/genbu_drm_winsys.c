@@ -34,7 +34,7 @@ genbu_drm_winsys_create(int drmFD)
 
    gdws->base.aperture_size = genbu_drm_aperture_size;
 
-   
+   genbu_drm_winsys_init_buffer_functions(gdws);
 
    return &gdws->base;
 }
