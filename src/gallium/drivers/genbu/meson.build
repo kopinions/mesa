@@ -2,13 +2,19 @@ inc_genbu = files(
     'genbu_public.h',
     'genbu_screen.h',
     'genbu_winsys.h',
-    'genbu_context.h'
+    'genbu_context.h',
+    'genbu_resource.h',
+    'genbu_reg.h',
+    'genbu_state.h',
 )
 
 files_genbu = files(
   'genbu_screen.c',
   'genbu_context.c',
-  'genbu_state.c'
+  'genbu_state.c',
+  'genbu_resource.c',
+  'genbu_resource_buffer.c',
+  'genbu_resource_tex.c'
 )
 
 libgenbu = static_library(

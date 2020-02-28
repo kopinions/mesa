@@ -16,7 +16,29 @@ struct genbu_drm_winsys
 
    size_t max_batch_size;
 };
-  
+
+struct genbu_drm_buffer {
+   unsigned magic;
+
+   // todo: drm_intel_bo *bo;
+
+   void *ptr;
+   unsigned map_count;
+
+   boolean flinked;
+   unsigned flink;
+};
+
+static inline struct genbu_drm_buffer *
+genbu_drm_buffer(struct genbu_winsys_buffer *buffer)
+{
+   return (struct genbu_drm_buffer *)buffer;
+}
+
+
+void genbu_drm_winsys_init_buffer_functions(struct genbu_drm_winsys *gdws);
+
+    
 static inline struct genbu_drm_winsys *
 genbu_drm_winsys(struct genbu_winsys *gws)
 {

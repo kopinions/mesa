@@ -514,5 +514,7 @@ genbu_create_screen(struct genbu_winsys *winsys)
    
    screen->base.context_create = genbu_context_create;
    screen->base.destroy = genbu_screen_destroy;
+
+   genbu_init_screen_resource_functions(screen);
    return &screen->base;
 }
