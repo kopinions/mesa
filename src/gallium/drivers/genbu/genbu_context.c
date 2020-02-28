@@ -71,7 +71,7 @@ struct pipe_context *genbu_context_create(struct pipe_screen *screen,
    genbu_init_state_functions(genbu);
       
    // TODO: genbu_init_flush_functions(genbu);
-   // TODO: genbu_init_resource_functions(genbu);
+   genbu_init_resource_functions(genbu);
    // TODO: genbu_init_query_functions(genbu);
 
    /* Create blitter. */

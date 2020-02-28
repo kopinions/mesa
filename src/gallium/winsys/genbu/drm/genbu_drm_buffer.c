@@ -129,5 +129,5 @@ genbu_drm_winsys_init_buffer_functions(struct genbu_drm_winsys *gdws)
    gdws->base.buffer_from_handle = genbu_drm_buffer_from_handle;
    gdws->base.buffer_get_handle = genbu_dram_buffer_get_handle;
    gdws->base.buffer_destroy = genbu_drm_buffer_destory;
-   gdws->base.buffer_create_tiled = genbu_drm_buffer_created_tiled;
+   gdws->base.buffer_create_tiled = genbu_drm_buffer_create_tiled;
 }

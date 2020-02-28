@@ -7,6 +7,7 @@
 
 
 struct genbu_screen;
+struct genbu_context;
 extern struct u_resource_vtbl genbu_buffer_vtbl;
 extern struct u_resource_vtbl genbu_texture_vtbl;
 
@@ -65,7 +66,7 @@ static inline struct genbu_texture *genbu_texture(struct pipe_resource *resource
 
 void genbu_init_screen_resource_functions(struct genbu_screen *gs);
   
-
+void genbu_init_resource_functions(struct genbu_context *gc);
 
 struct pipe_resource *
 genbu_buffer_create(struct pipe_screen *screen,
@@ -80,5 +81,9 @@ struct pipe_resource *
 genbu_texture_from_handle(struct pipe_screen * screen,
 			 const struct pipe_resource *template,
 			 struct winsys_handle *whandle);
-
+void
+genbu_buffer_subdata(struct pipe_context *rm_ctx,
+                    struct pipe_resource *resource,
+                    unsigned usage, unsigned offset,
+                     unsigned size, const void *data);
 #endif//GENBU_RESOURCE_H

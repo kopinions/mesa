@@ -91,3 +91,15 @@ err:
    FREE(buf);
    return NULL;
 }
+
+
+void
+genbu_buffer_subdata(struct pipe_context *rm_ctx,
+                    struct pipe_resource *resource,
+                    unsigned usage, unsigned offset,
+                    unsigned size, const void *data)
+{
+   struct genbu_buffer *buffer = genbu_buffer(resource);
+
+   memcpy(buffer->data + offset, data, size);
+}
