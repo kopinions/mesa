@@ -6,6 +6,7 @@ inc_genbu = files(
     'genbu_resource.h',
     'genbu_reg.h',
     'genbu_state.h',
+    'genbu_surface.h'
 )
 
 files_genbu = files(
@@ -14,7 +15,8 @@ files_genbu = files(
   'genbu_state.c',
   'genbu_resource.c',
   'genbu_resource_buffer.c',
-  'genbu_resource_tex.c'
+  'genbu_resource_tex.c',
+  'genbu_surface.c'
 )
 
 libgenbu = static_library(

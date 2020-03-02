@@ -2,6 +2,7 @@
 #include "genbu_screen.h"
 #include "genbu_resource.h"
 #include "genbu_state.h"
+#include "genbu_surface.h"
 
 
 #include "draw/draw_context.h"
@@ -66,10 +67,9 @@ struct pipe_context *genbu_context_create(struct pipe_screen *screen,
       draw_set_rasterize_stage(genbu->draw, genbu_draw_render_stage(genbu));
    }
 
-   //TODO: genbu_init_surface_functions(genbu);
+   genbu_init_surface_functions(genbu);
    //TODO: genbu_init_state_functions(genbu);
    genbu_init_state_functions(genbu);
-      
    // TODO: genbu_init_flush_functions(genbu);
    genbu_init_resource_functions(genbu);
    // TODO: genbu_init_query_functions(genbu);
